@@ -53,7 +53,7 @@ got %>%                               # nimm das Objekt: got
 qm %>%                                                        # nimm den Datensatz qm
   filter(partnerinnen <= 15, !is.na(partei)) %>%              # behalte alle Werte, auf die Filter zutreffen
   ggplot(aes(x = partei, y = partnerinnen, fill = partei)) +  # erstelle eine Grafik; 'fill' färbt Daten ein
-  geom_boxplot() +                                          # die Grafik soll ein Bocplot sein
+  geom_boxplot() +                                          # die Grafik soll ein Boxplot sein
   labs(x = "Partei", y = "Anzahl Sexualpartnerschaften") +  # beschrifte die Achsen
   coord_flip() +                                            # drehe die Grafik
   theme(legend.position = "none")                           # und blende die Legende aus
