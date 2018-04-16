@@ -10,24 +10,24 @@
 # Thomas Schneider (195), Bruno Labbadia (987),
 # Jens Keller (58), Christian Groß (310), Markus Babbel (380)
 
-###
+# Tage in Variable speichern um Dinge zu tun ----
 
 tage <- c(987, 517, 494, 5, 76, 76, 145, 217, 145, 113, 195, 58, 310, 380)
 
 # Kennwerte
-mean(tage)
-median(tage)
+mean(tage)   # Mittelwert (mean)
+median(tage) # Median
 
-var(tage)
-sd(tage)
-IQR(tage)
+var(tage) # Varianz
+sd(tage)  # Standardabweichung
+IQR(tage) # Interquqartilsabstand (inter-quartile range)
 
-# Indexing ----
+# Indexing: Siehe auch https://r-intro.tadaa-data.de/book/erste-schritte.html ----
 
 # Nur der erste Wert
 tage[1]
 
-# Statistiken von tage *ohne* den ersten Wert
+# Statistiken von tage *ohne* den ersten Wert (Bruno Labbadia (987))
 mean(tage[-1])
 median(tage[-1])
 
@@ -35,7 +35,7 @@ var(tage[-1])
 sd(tage[-1])
 IQR(tage[-1])
 
-# data.frame ----
+# data.frame Beispiel ----
 menschen <- data.frame(namen = c("lukas", "tobias", "christoph"),
                        alter = c(26, 31, 32))
 
@@ -59,14 +59,13 @@ sleep$group == 1
 # Alle aus Gruppe 1
 sleep[sleep$group == 1, ]
 
-#### Packages: dplyr
+# Packages: dplyr ----
 
 # Nur einmal. Antivirus deaktivieren unter Windows!
 # install.packages("dplyr")
 
 # Package laden (verfügbar machen)
 library("dplyr")
-
 
 # Zeilen filtern mit dplyr und filter()
 filter(sleep, group == 1)
