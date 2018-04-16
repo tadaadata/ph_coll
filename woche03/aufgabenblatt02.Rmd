@@ -1,0 +1,49 @@
+---
+title: "Aufgabenblatt 02 (Woche 3)"
+author: "Lukas"
+date: "4/16/2018"
+output: html_document
+---
+
+# Aufgabe 1:
+
+Bei einem Bundesligaclub aus Bremen wurden von n = 29 eingesetzten Feldspielern im Lauf der Saison 61 Tore erzielt. Wenn wir uns die Anzahl der erzielten Tore für jeden eingesetzten Spieler anschauen, ergeben sich folgende Rohwerte:
+
+1, 0, 0, 1, 5, 0, 1, 0, 0, 1, 4, 1, 0, 0, 0, 2, 1, 4, 2, 0, 0, 0, 8, 11, 1, 15, 1, 1, 1 
+
+Stellen Sie die oben angegebenen Tore in übersichtlicherer Form tabellarisch dar, und geben Sie absolute und relative Häufigkeiten der Anzahl erzielter Tore ab, und beschreiben Sie die Verteilungsform der Rohdaten.
+
+- Wie viele Spieler haben gar kein Tor erzielt?
+- Wie viele Spieler haben vier Tore erzielt?
+- Wie groß ist der Anteil der Spieler, die fünf oder mehr Tore erzielt haben?
+
+```{r tore, message=FALSE}
+tore <- c(1, 0, 0, 1, 5, 0, 1, 0, 0, 1, 4, 1, 0, 0, 0, 2, 1, 4, 2, 0, 0, 0, 8, 11, 1, 15, 1, 1, 1 )
+
+# Einfache Häufigkeitstabelle
+table(tore)
+
+# Oder mit sjPlot: Schönere Häufigkeitstabelle
+
+library(sjPlot)
+sjt.frq(tore)
+```
+
+Weil Sie Ihre Freundinnen und Freunde mit Ihren neuen Statistik-Kenntnissen beeindrucken möchten und sich außerdem in geselliger Runde als Kenner_in bremischer Bundesligaclubs profilieren möchten, teilen Sie den Kader des oben genannten Clubs in folgende Torschützen-Kategorien ein:
+
+- Chancentod = 0 Tore 
+- Dieter-Eilts-Gedächtnisscorer = 1-4 Tore 
+- Kleines Dickes Ailton = mehr als 5 Tore
+
+Zeichnen Sie ein Histogramm für diese Kategorien.
+
+# Aufgabe 2 (Standardnormalverteilung)
+
+Martin ist aufgeregt: Er hat sich zu einem Blind Date verabredet! Weil Martin ein wenig eitel ist, interessiert ihn (unter anderem), wie wahrscheinlich es ist, dass sein Blind Date so groß ist wie er selbst (198 cm). Dabei kann er davon ausgehen, dass die Körpergröße der Männer in Deutschland normalverteilt ist mit einem Erwartungswert (Mittelwert der Population) von 180 cm und einer Varianz von 110,25.
+
+Wie groß ist die Wahrscheinlichkeit, dass Martins Blind Date genauso groß ist wie er?
+
+```{r SNV}
+mosaic::xpnorm(q = 198, mean = 180, sd = sqrt(110.25))
+```
+
