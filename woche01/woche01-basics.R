@@ -7,7 +7,7 @@
 # Arithmetik / Grundrechenarten ----
 
 3 + 4           ## Addition
-3 - 4           ## Substraktion
+3 - 4           ## Subtraktion
 3 * 4           ## Multiplikation
 3 / 4           ## Division
 3 ^ 4           ## Potenzierung... Potentiation? Potenzkram halt
