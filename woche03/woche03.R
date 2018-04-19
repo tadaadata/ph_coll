@@ -13,7 +13,8 @@ gotdeaths_R <- read_rds("daten/gotdeaths_R.rds")
 gotdeaths_excel <- read_excel("daten/gotdeaths_excel.xls")
 
 # CSV ----
-# delim = delimiter = Trennwert zwischen Werten, in diesem Fall ";"
+# delim = delimiter = Trennwert zwischen Werten, in diesem Fall ";" (besser für Excel)
+# Gängige delimiter sind comma, tab, etc.
 gotdeaths_csv <- read_delim("daten/gotdeaths_csv.csv", delim = ";")
 
 # Alternativ: Import Dataset-Button oben rechts in RStudio (Code kopieren!)
