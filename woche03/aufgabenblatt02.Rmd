@@ -18,7 +18,7 @@ Stellen Sie die oben angegebenen Tore in übersichtlicherer Form tabellarisch da
 - Wie groß ist der Anteil der Spieler, die fünf oder mehr Tore erzielt haben?
 
 ```{r tore, message=FALSE}
-tore <- c(1, 0, 0, 1, 5, 0, 1, 0, 0, 1, 4, 1, 0, 0, 0, 2, 1, 4, 2, 0, 0, 0, 8, 11, 1, 15, 1, 1, 1 )
+tore <- c(1, 0, 0, 1, 5, 0, 1, 0, 0, 1, 4, 1, 0, 0, 0, 2, 1, 4, 2, 0, 0, 0, 8, 11, 1, 15, 1, 1, 1)
 
 # Einfache Häufigkeitstabelle
 table(tore)
@@ -45,5 +45,29 @@ Wie groß ist die Wahrscheinlichkeit, dass Martins Blind Date genauso groß ist 
 
 ```{r SNV}
 mosaic::xpnorm(q = 198, mean = 180, sd = sqrt(110.25))
+```
+
+# Aufgabe 3 (Binomialverteilung)
+
+> Eine Person, die Statistik-Vorlesungen hält, möchte gern Klavier spielen lernen und kauft ein Klavier. Das Klavier hat (wie die meisten Klaviere) 88 Tasten, 52 weiße und 36 schwarze. Bevor allerdings tatsächlich Unterricht genommen wird, drückt die Person blind am neu erworbenen Klavier auf Tasten. Das hört sich nicht gut an. Die Person fragt sich aber: Wie groß ist die Wahrscheinlichkeit, dass sie beim wahllosen blinden Drücken von 10 Tasten 5 weiße und 5 schwarze Tasten erwischt?
+
+Ansatz:
+
+- 88 Tasten
+- 52 weiß --> $p(weiß) = \frac{52}{88} \approx 0.59$
+- 10 Tastendrücke, davon 5 weiß
+- Werte in Binomialformel einsetzen und fertig
+
+(Matheformel cia $\LaTeX$)
+
+$$P(X = x) = \binom{n}{x} \cdot p^x \cdot (1-p)^{n-x}$$
+$$P(X = 5) = \binom{10}{5} \cdot 0.59^5 \cdot (1-0.59)^{10-5}$$
+
+```{r aufgabe03}
+# Exakten Wert für 5:
+dbinom(x = 5, size = 10, prob = 0.59)
+
+# Graphische Betrachtung
+mosaic::xpbinom(q = 5, size = 10, prob = 0.59)
 ```
 
