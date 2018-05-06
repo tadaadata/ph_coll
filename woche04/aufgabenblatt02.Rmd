@@ -58,7 +58,7 @@ Ansatz:
 - 10 Tastendrücke, davon 5 weiß
 - Werte in Binomialformel einsetzen und fertig
 
-(Matheformel cia $\LaTeX$)
+(Matheformel via $\LaTeX$)
 
 $$P(X = x) = \binom{n}{x} \cdot p^x \cdot (1-p)^{n-x}$$
 $$P(X = 5) = \binom{10}{5} \cdot 0.59^5 \cdot (1-0.59)^{10-5}$$
