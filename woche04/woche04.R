@@ -77,3 +77,50 @@ names(gotbooks) <- names(gotbooks) %>%
   str_to_lower()
 
 names(gotbooks)
+
+# Wide und Long format
+library(tidyr)
+
+head(gotbooks)
+
+# Wir haben 5 Spalten, je eine pro Buch, die anzeigen ob eine Person im Buch vorkommt
+# Ziel: Zwei Spalten. Eine "Buchtitel", eine "Person taucht auf ja/nein"
+
+gotbooks %>%
+  gather(key = "book", value = "appearance", got, cok, sos, ffc, dwd)
+
+# gather = "fasse zusammen"
+# Variable "book" (key) entählt die alten Variablennamen (got, cok, sos, ffc, dwd)
+# Variable appearance (value) enthält die alten Werte (0 oder 1)
+# Der resultierence Datenstaz ist deutlich länger! 5 Zeilen pro Person, eine Zeile pro Buch
+
+# Speichern
+gotbooks_long <- gotbooks %>%
+  gather(key = "book", value = "appearance", got, cok, sos, ffc, dwd)
+
+# Jetzt sind wir flexibler
+gotbooks_long %>%
+  group_by(book) %>%
+  summarize(appearances_sum = sum(appearance))
+
+# Plots? ----
+library(ggplot2)
+
+ggplot(data = gotbooks_long, aes(x = book, y = appearance)) +
+  geom_col()
+
+# Sortiert nach Häufigkeit
+# Gruppieren nach "book", "appearance" zählen
+gotbooks_long %>%
+  group_by(book) %>%
+  tally(appearance)
+
+# Piping von dplyr direkt in ggplot stuff
+gotbooks_long %>%
+  group_by(book) %>%
+  tally(appearance) %>%
+  ggplot(aes(x = reorder(book, n), y = n)) +
+  geom_col() +
+  labs(title = "A Song of Ice and Fire",
+       subtitle = "Characters per Book",
+       x = "Book", y = "Character Appearances")
