@@ -1,0 +1,95 @@
+---
+title: "Aufgabenblatt 03 (Woche 4)"
+author: "Lukas"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Aufgabe 1:
+
+> Jan-Ödipus B. hält sich für etwas Besseres (wir wollen nicht über die familiären Hintergründe der Namensgebung spekulieren). Beim Aufnahmetest für den Mensa-Club (der einen Intelligenzquotienten von 130 voraussetzt) ist er allerdings durchgefallen und erzielte in diesem Test einen **Wert von 109**. Toll, denkt sich Jan-Ödipus: Das ist immer noch intelligenter als der Durchschnitt der Bevölkerung!
+
+> Wie wahrscheinlich ist es, dass die nächste Person, die Jan-Ödipus auf der Straße trifft, intelligenter ist als Jan-Ödipus?
+
+> Dazu müssen wir wissen, dass Intelligenz normalverteilt ist, einen **Mittelwert von 100 aufweist und eine Varianz von 225** hat.
+
+## Lösung
+
+- Intelligenz: $N(\mu, \sigma^2): N(100, 225)$
+- $x = 109$
+- $z = \frac{109 - 100}{\sqrt{225}} = \frac{-9}{15} = -0.6$
+
+```{r}
+# Roher Wert:
+1 - pnorm(q = 109, mean = 100, sd = sqrt(225))
+
+# In bunt:
+# Package mosaic installieren:
+# install.packages("mosaic")
+
+mosaic::xpnorm(q = 109, mean = 100, sd = sqrt(225))
+```
+
+
+# Aufgabe 2:
+
+> Was ist der Unterschied zwischen der Standardabweichung einer Verteilung und dem Standardfehler? Wie hängen Standardabweichung und Standardfehler zusammen?
+
+- $s_x = \frac{1}{n-1} \sum^n_{i = 1} (x_i - \bar{x})^2$ 
+- $SEM = \frac{s_x}{\sqrt{n}}$
+- Fazit: $SEM \leq s_x$
+
+# Aufgabe 3:
+
+> Was sind Typ-I und Typ-II-Fehler?
+
+
+|            | Test $H_0$  | Test $H_1$ |
+|------------|-------------|------------|
+| Real $H_0$ | Kein Effekt | $\alpha$   |
+| Real $H_1$ | $\beta$     | Effekt     | 
+
+# Aufgabe 4:
+
+> Eine interessante Frage. Stellen Sie sich vor, eine Gruppe von Statistik-Studierenden ohne Partner_in fragt sich, welche Strategie wohl am Erfolg versprechendsten ist, um eine potentielle Partner_in kennenzulernen. Nehmen wir weiterhin an, dass wir das durch die Zeit, die einen potenzielle Partner_in mit der/dem Studierenden verbringt, messen können. Die Gruppe der Studierenden hat nun gelesen, dass (zumindest im Tierreich) singen eine sehr gute Strategie zu sein scheint, um potenzielle Partner_innen zu interessieren. Daher werden die Studierenden zufällig in zwei Gruppen aufgeteilt. Die eine Gruppe (Gruppe A) singt bei einem Blind Date mit einer/einem zufällig ausgewählten Vertreter_in der sexuellen Wunschausrichtung, die andere betreibt Konversation (Gruppe B).
+
+> Wir messen die Zeit, die es dauert, bis das Blind Date die Verabredung abbricht. In **Gruppe A** dauert das **10 Minuten**, und in **Gruppe B 12 Minuten**. Die Standardabweichung beträgt *3 Minuten in allen Gruppen*. Weil Replikation sehr wichtig ist, wird die Studie dreimal durchgeführt. In Studie 1 nehmen *10* Studierende in Gruppe A und *10* in Gruppe B teil. In Studie 2 sind es jeweils *100* Studierende pro Gruppe.
+
+> Berechnen Sie die Konfidenzintervalle von beiden Gruppen und interpretieren Sie die Konfidenzintervalle.
+
+- **Gruppe A**:
+   - $\bar{x} = 10$
+   - $s_x = 3$
+   - für n = 10:
+      - KI untere Grenze: $10 - \left(\frac{s_x}{\sqrt{10}} \cdot 1.96\right) \approx 8.76$
+      - KI obere Grenze: $10 + \left(\frac{s_x}{\sqrt{10}} \cdot 1.96\right) \approx 11.24$
+   - für n = 100:
+      - KI untere Grenze: $10 - \left(\frac{s_x}{\sqrt{100}} \cdot 1.96\right) \approx 9.6$
+      - KI obere Grenze: $10 + \left(\frac{s_x}{\sqrt{100}} \cdot 1.96\right) \approx 10.39$
+
+```{r brechnungen_a4a}
+# n = 10
+10 - (2/sqrt(10) * 1.96)
+10 + (2/sqrt(10) * 1.96)
+
+# n = 100
+10 - (2/sqrt(100) * 1.96)
+10 + (2/sqrt(100) * 1.96)
+```
+
+   
+- **Gruppe B**:
+   - $\bar{x} = 12$
+   - $s_x = 3$
+   - ...
+  
+
+# Aufgabe 5:
+
+> Weil die Studien aus Aufgabe 4 so unglaublich spannend sind, beschließt ein internationales Konsortium, die Studien zu replizieren, und zwar mit jeweils einer Million Teilnehmenden pro Gruppe. Dabei sind die Zeiten 10 Minuten (Singen) und 10.01 Minuten (Konversation). Die Standardabweichung in beiden Gruppen beträgt 3. Berechnen Sie die Konfidenzintervalle und interpretieren Sie die Konfidenzintervalle. Was sagt uns das über den Zusammenhang von Konfidenzintervallen und der Stichprobengröße?
+
+## Notizen
+
+Größeres N -> schmaleres KI
