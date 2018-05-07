@@ -8,7 +8,7 @@ library(ggplot2)      # zur Erstellung von Grafiken
 
 # der _eigentliche_ Befehl, der ausgeführt wird, wenn wir
 # oben rechts unter "import Dataset -> From Text (readr)..." etwas laden
-got <- read_csv("data/gotdeaths_books.csv")   # diese Zeile funktioniert NUR BEI MIR
+got <- read_csv("daten/gotdeaths_books.csv")  # diese Zeile funktioniert NUR BEI MIR
                                               # ihr müsst die Datei selber auswählen
                                               # und anschließend den Code kopieren!
 
