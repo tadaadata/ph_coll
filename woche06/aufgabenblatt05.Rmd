@@ -1,0 +1,77 @@
+---
+title: "Aufgabenblatt 05"
+author: "Lukas"
+date: "5/14/2018"
+output: 
+  html_document: 
+    fig_height: 4
+    fig_width: 5
+    toc: yes
+---
+
+# Aufgabe 1
+
+a) Was ist der formale Unterschied zwischen der Kreuzproduktsumme und der Kovarianz?
+
+- Antwort1
+- Antwort
+
+b) Welchen Wert hat die Kovarianz, wenn eine der beiden beteiligten Variablen eine Varianz von 0 hat?
+
+c) Wie verändert sich die Kovarianz, wenn man zu allen Werten der Variable x einen Wert von 3 und zu allen Werten auf der Variablen y einen Wert von 5 addiert?
+
+d) Wie verändert sich die Kovarianz, wenn man alle Werte der Variablen x mit 10 und alle Werte der Variablen y mit 15 multipliziert?
+
+# Aufgabe 2
+
+e) Wie verändert sich die Korrelation zwischen x und y, wenn man zu allen Werten der Variable x einen Wert von 3 und zu allen Werten auf der Variablen y einen Wert von 5 addiert?
+
+f) Wie verändert sich die K Korrelation zwischen x und y, wenn man alle Werte der Variablen x mit 10 und alle Werte der Variablen y mit 15 multipliziert?
+
+# Aufgabe 3
+
+Sie arbeiten seit kurzem als Statistik-Guru in der Mitgliederabteilung bei einem Fußballverein in Hamburg, der noch bis vor kurzem in der ersten Bundesliga gespielt hat. Sie stellen fest, dass es in letzter Zeit eine bedenkliche Zunahme an Austrittsdrohungen gegeben hat und vermuten, dass es einen Zusammenhang zwischen der Dauer der Mitgliedschaft im Verein und Austrittsdrohungen gibt – je länger jemand Mitglied ist, desto enttäuschter, und desto wahrscheinlicher Austrittsdrohungen. Folgende Daten finden Sie in der Mitgliederdatenbank: Durchschnittliche Mitgliedschaft 48 Monate bei einer Varianz von 225, durchschnittliche Anzahl von Austrittsdrohungen 4,87 bei einer Varianz von 400 und einer Kovarianz von 60.
+
+a) Welches Zusammenhangsmaß ist hier angebracht?
+
+b) Berechnen Sie das Zusammenhangsmaß
+
+c) Sollten Sie in diesem Fall eine inferenzstatistische Überprüfung des Zusammenhangsmaßes durchführen? Wenn ja oder nein, warum?
+
+# Aufgabe 4
+
+Als aufgeweckt durchs Leben gehende Zeitgenoss_in haben Sie beobachtet, dass diejenigen unter Ihren Bekannten, die mehr Iron-Maiden-Alben besitzen, ausgeglichener wirken. 1 Eine interessante Beobachtung, die Sie sofort in einer empirischen Untersuchung überprüfen möchten. Dazu fragen Sie Ihre Bekannten nach der Anzahl von Iron Maiden – Alben, die sie real oder digital besitzen und erheben ihre Ausgeglichenheit mittels einer Skala, die Werte zwischen 1 (sehr unausgeglichen) bis 10 (sehr ausgeglichen) erfasst. Folgende Werte erhalten Sie:
+
+- Anzahl Iron Maiden-Alben: `8 4 4 6 2 6`  
+- Ausgeglichenheit: `10 5 8 6 3 4`
+
+## a) Zeichnen Sie ein Streudiagramm. Was lässt sich aufgrund des Streudiagramms bereits über den Zusammenhang sagen?
+
+```{r aufgabe_4}
+aufgabe4 <- data.frame(alben = c(8, 4, 4, 6, 2, 6),
+                       ausgeglichen = c(10, 5, 8, 6, 3, 4))
+
+library(ggplot2)
+
+ggplot(data = aufgabe4, aes(x = alben, y = ausgeglichen)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "#a747ed") +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(breaks = 1:10) +
+  labs(title = "Scatterplot",
+       x = "Iron-Maiden Alben",
+       y = "Ausgeglichenheit") +
+  theme_minimal()
+
+```
+
+
+## b) Berechnen Sie ein angebrachtes Zusammenhangsmaß und begründen Sie Ihre Wahl.
+
+
+Berechnung via `cor()`
+
+- r = `r round(cor(aufgabe4$alben, aufgabe4$ausgeglichen), 4)`
+- R^2 = `r round(cor(aufgabe4$alben, aufgabe4$ausgeglichen)^2, 4)`
+
+
