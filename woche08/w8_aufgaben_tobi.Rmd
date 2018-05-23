@@ -1,0 +1,33 @@
+---
+title: "Woche 08 - R-Aufgaben"
+author: "Tobi"
+date: "23 Mai 2018"
+output: 
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float: true
+---
+
+# R-Syntax
+
+Zeichen (Name)  | Bedeutung               | **nicht** zu verwechseln mit
+----------------|-------------------------|--------------------------------
+`.` (Punkt)     | Dezimaltrenner          | `,` (Komma)
+`,` (Komma)     | Argumentetrenner        | `.` (Punkt)
+`<-` (Kleiner Minus)  | Zuweisungspfeil    | ...
+`=` (Gleichheitszeichen)   | Zuweisungen **in Funktionen** | ...
+`==` (doppeltes Gleichheitszeichen) | logischer Vergleich: "ist gleich" | ...
+`<=` (Kleiner Gleich) | logischer Vergleich: "ist kleiner oder gleich"  | ...
+`>=` (Kleiner Gleich) | logischer Vergleich: "ist größer oder gleich"   | ...
+
+# Einige Aufgaben zur Wiederholung
+
+## Variablen/Vektoren/Obejekte erstellen
+
+1. Erstelle 100 _normalverteilte Zufallsvariablen_ und lege sie als Objekt in deiner Arbeitsumgebung ab:
+  - a) mit dem Mittelwert 90 und der Standardabweichung 15
+  - b) mit dem Mittelwert 110 und der Standardabweichung 15
+2. Erstelle **ein** Objekt, in dem...
+  - a) je 100x _abwechselnd_ die Wörter "rot" und "grün" vorkommen
+  - b) _erst_ 100x "rot" und _dann_ 100x "grün" vorkommt 
