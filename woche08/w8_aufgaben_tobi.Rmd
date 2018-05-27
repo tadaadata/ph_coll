@@ -57,7 +57,7 @@ Das teilt **R** mit, dass die Zeichen _im_ String auch _Teil_ des Strings sind u
 Die Konvention ist, auch wenn die beiden Zeichen im großen und ganzen auswechselbar sind, Strings mit `"` zu markieren und nur in Ausnahmen (wie dem Beispiel) `'` zu benutzen. Andere Ausnahmen können Argumente bestimmter Befehle/Funktionen betreffen, darauf soll hier aber nicht näher eingegangen werden und muss ggf. im Einzelfall berücksichtigt werden.
 
 **`bla` -- Backticks:**  
-so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String gehören, markieren Backticks, dass alle folgenden Zeichen zum gleichen Objekt (der Arbeitsumgebung) gehören.
+so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String gehören, markieren `` ` `` Backticks, dass alle folgenden Zeichen zum gleichen Objekt (der Arbeitsumgebung) gehören.
 
 ```{r}
 `olle dingers` <- "Bobstein"
