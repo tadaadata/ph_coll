@@ -56,8 +56,8 @@ Das teilt **R** mit, dass die Zeichen _im_ String auch _Teil_ des Strings sind u
 
 Die Konvention ist, auch wenn die beiden Zeichen im großen und ganzen auswechselbar sind, Strings mit `"` zu markieren und nur in Ausnahmen (wie dem Beispiel) `'` zu benutzen. Andere Ausnahmen können Argumente bestimmter Befehle/Funktionen betreffen, darauf soll hier aber nicht näher eingegangen werden und muss ggf. im Einzelfall berücksichtigt werden.
 
-**`bla` -- Backticks:**  
-so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String gehören, markieren `` ` `` Backticks, dass alle folgenden Zeichen zum gleichen Objekt (der Arbeitsumgebung) gehören.
+**`` ` `` -- Backticks:**  
+so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String gehören, markieren `` ` ``, dass alle folgenden Zeichen zum gleichen Objekt (der Arbeitsumgebung) gehören.
 
 ```{r}
 `olle dingers` <- "Bobstein"
@@ -69,10 +69,24 @@ so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String g
 ## Variablen/Vektoren/Obejekte erstellen
 
 1. Erstelle 100 _normalverteilte Zufallsvariablen_ und lege sie als Objekt in deiner Arbeitsumgebung ab:
-  - a) mit dem Mittelwert 90 und der Standardabweichung 15
-  - b) mit dem Mittelwert 110 und der Standardabweichung 15
+    a) mit dem Mittelwert 90 und der Standardabweichung 15
+    b) mit dem Mittelwert 110 und der Standardabweichung 15
 2. Erstelle **ein** Objekt, in dem...
-  - a) je 100x _abwechselnd_ die Wörter "rot" und "grün" vorkommen
-  - b) _erst_ 100x "rot" und _dann_ 100x "grün" vorkommt 
+    a) je 100x _abwechselnd_ die Wörter "rot" und "grün" vorkommen
+    b) _erst_ 100x "rot" und _dann_ 100x "grün" vorkommt 
 
 ## Daten einlesen
+
+1. Lade den `qmsurvey`-Datensatz und den zugehörigen Fragebogen aus stud.ip herunter
+2. Lies den Datendatz via `readr` ein und gib ihm einen sinnvollen/praktischen Namen
+3. Verschaffe dir einen Überblick:  
+    a) Was wurde alles abgefragt?  
+    b) Lässt sich (vermutlich) mit den Daten arbeiten? Muss noch was aufgebessert werden?  
+  
+## Überblick verschaffen
+
+1. Setze dich mit den Funktionen `summary()` und `table()` auseinander:  
+    a<sub>1</sub>) Was passiert, wenn man `summary()` auf eine **ketgoriale** Variable anwendet?  
+    a<sub>2</sub>) Was passiert, wenn man `summary()` auf eine **kontinuierliche** Variable anwendet?  
+    b<sub>1</sub>) Was passiert, wenn man `table()` auf eine **ketgoriale** Variable anwendet?  
+    b<sub>2</sub>) Was passiert, wenn man `table()` auf eine **kontinuierliche** Variable anwendet?
