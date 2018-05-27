@@ -86,7 +86,7 @@ so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String g
 ## Überblick verschaffen
 
 1. Setze dich mit den Funktionen `summary()` und `table()` auseinander:  
-    a<sub>1</sub>) Was passiert, wenn man `summary()` auf eine **ketgoriale** Variable anwendet?  
+    a<sub>1</sub>) Was passiert, wenn man `summary()` auf eine **kategoriale** Variable anwendet?  
     a<sub>2</sub>) Was passiert, wenn man `summary()` auf eine **kontinuierliche** Variable anwendet?  
-    b<sub>1</sub>) Was passiert, wenn man `table()` auf eine **ketgoriale** Variable anwendet?  
+    b<sub>1</sub>) Was passiert, wenn man `table()` auf eine **kategoriale** Variable anwendet?  
     b<sub>2</sub>) Was passiert, wenn man `table()` auf eine **kontinuierliche** Variable anwendet?
