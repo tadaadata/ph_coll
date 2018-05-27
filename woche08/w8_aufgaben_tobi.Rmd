@@ -5,21 +5,64 @@ date: "23 Mai 2018"
 output: 
   html_document:
     theme: cosmo
+    highlight: textmate
+    code_folding: show
     toc: true
     toc_float: true
 ---
 
 # R-Syntax
 
-Zeichen (Name)  | Bedeutung               | **nicht** zu verwechseln mit
-----------------|-------------------------|--------------------------------
-`.` (Punkt)     | Dezimaltrenner          | `,` (Komma)
-`,` (Komma)     | Argumentetrenner        | `.` (Punkt)
-`<-` (Kleiner Minus)  | Zuweisungspfeil    | ...
-`=` (Gleichheitszeichen)   | Zuweisungen **in Funktionen** | ...
-`==` (doppeltes Gleichheitszeichen) | logischer Vergleich: "ist gleich" | ...
-`<=` (Kleiner Gleich) | logischer Vergleich: "ist kleiner oder gleich"  | ...
-`>=` (Kleiner Gleich) | logischer Vergleich: "ist größer oder gleich"   | ...
+Zeichen  | Bedeutung     | Beispiel
+---------|---------------|--------------------------------
+`.`   | Dezimaltrenner            | `c(3.2, 4.5, 7.9)`
+`,`   | Argumente-/ Objekttrenner | `c(3.2, 4.5, 7.9)`
+`"`   | trennt Text von Code      | `Baum` vs. `"Baum"`
+---   |                           |
+`<-`  | Zuweisungspfeil           | `nmbr <- c(3.2, 4.5, 7.9)`
+`=`   | Zuweisungen **in Funktionen** | `rnorm(n = 10, mean = 5, sd = 2)`
+---   |                           |
+`==`  | logischer Vergleich: "ist gleich" | `"red" == "green"`
+`<=`  | logischer Vergleich: "ist kleiner oder gleich"  | `nmbr <= 5`
+`>=`  | logischer Vergleich: "ist größer oder gleich"    | ...
+---   |                           |
+`$`   | Indizierung von Daten     | `data$variable`, `got$allegiance`
+
+### Besonderheiten
+
+**`'` -- einfaches Anführungszeichen:**  
+prinzipiell _exakt_ das Gleiche wie die doppelten Anführungszeichen und kann sogar komplett statt dessen benutzt werden:
+
+```{r}
+"Super"
+'Mario'
+```
+
+Interessant wird es, wenn z.B. beide im gleichen Kontext auftauchen. Habe ich z.B. einen Text-String vorliegen, in dem von sich aus schon Anführungszeichen auftauchen, passieren seltsame Dinge:
+
+```{r eval=FALSE}
+"Dwayne "The Rock" Jonhnson"
+```
+
+An der Textmarkierung sieht man schon: **R** behandelt `"Dwayne "` als einen eigenen Text-String, `The Rock` (wegen des Leerzeichens) als zwei Objekte aus der Arbeitsumgebung und `" Johnson"` wieder als eigenen Text-String. Das liegt daran, dass `"` nunmal den Anfang und das Ende eines Text-Strings markieren.
+
+Lösen lässt sich das Problem aber durch `'`, bzw. die Kombination beider Zeichen:
+
+```{r}
+"Dwayne 'The Rock' Johnson"
+```
+
+Das teilt **R** mit, dass die Zeichen _im_ String auch _Teil_ des Strings sind und eben nicht den String beenden.
+
+Die Konvention ist, auch wenn die beiden Zeichen im großen und ganzen auswechselbar sind, Strings mit `"` zu markieren und nur in Ausnahmen (wie dem Beispiel) `'` zu benutzen. Andere Ausnahmen können Argumente bestimmter Befehle/Funktionen betreffen, darauf soll hier aber nicht näher eingegangen werden und muss ggf. im Einzelfall berücksichtigt werden.
+
+**`bla` -- Backticks:**  
+so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String gehören, markieren Backticks, dass alle folgenden Zeichen zum gleichen Objekt (der Arbeitsumgebung) gehören.
+
+```{r}
+`olle dingers` <- "Bobstein"
+`olle dingers`
+```
 
 # Einige Aufgaben zur Wiederholung
 
@@ -31,3 +74,5 @@ Zeichen (Name)  | Bedeutung               | **nicht** zu verwechseln mit
 2. Erstelle **ein** Objekt, in dem...
   - a) je 100x _abwechselnd_ die Wörter "rot" und "grün" vorkommen
   - b) _erst_ 100x "rot" und _dann_ 100x "grün" vorkommt 
+
+## Daten einlesen
