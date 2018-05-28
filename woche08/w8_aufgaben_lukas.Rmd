@@ -1,0 +1,358 @@
+---
+title: 'Woche 8: Wiederholungsaufgaben'
+author: "Lukas"
+date: "2018-05-28"
+output: 
+  html_document:
+    theme: cosmo
+    code_folding: hide
+    toc: true
+    toc_float: true
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Kurzlink zu dieser Seite: <https://tadaa.click/ph8_lukas>
+
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, 
+                      message = FALSE, 
+                      error = FALSE, 
+                      warning = FALSE)
+library(dplyr)
+library(ggplot2)
+```
+
+# Reminder: R-Syntax
+
+Zeichen  | Bedeutung     | Beispiel
+---------|---------------|--------------------------------
+`.`   | Dezimaltrenner            | `c(3.2, 4.5, 7.9)`
+`,`   | Argumente-/ Objekttrenner | `c(3.2, 4.5, 7.9)`
+`"`   | trennt Text von Code      | `Baum` vs. `"Baum"`
+---   |                           |
+`<-`  | Zuweisungspfeil           | `nmbr <- c(3.2, 4.5, 7.9)`
+`=`   | Zuweisungen **in Funktionen** | `rnorm(n = 10, mean = 5, sd = 2)`
+---   |                           |
+`==`  | logischer Vergleich: "ist gleich" | `"red" == "green"`
+`<=`  | logischer Vergleich: "ist kleiner oder gleich"  | `nmbr <= 5`
+`>=`  | logischer Vergleich: "ist größer oder gleich"    | ...
+---   |                           |
+`$`   | Indizierung von Daten     | `data$variable`, `got$allegiance`
+
+## Besonderheiten
+
+**`'` -- einfaches Anführungszeichen:**  
+prinzipiell _exakt_ das Gleiche wie die doppelten Anführungszeichen und kann sogar komplett statt dessen benutzt werden:
+
+```
+"Super"
+'Mario'
+```
+
+Interessant wird es, wenn z.B. beide im gleichen Kontext auftauchen. Habe ich z.B. einen Text-String vorliegen, in dem von sich aus schon Anführungszeichen auftauchen, passieren seltsame Dinge:
+
+```
+"Dwayne "The Rock" Jonhnson"
+```
+
+An der Textmarkierung sieht man schon: **R** behandelt `"Dwayne "` als einen eigenen Text-String, `The Rock` (wegen des Leerzeichens) als zwei Objekte aus der Arbeitsumgebung und `" Johnson"` wieder als eigenen Text-String. Das liegt daran, dass `"` nunmal den Anfang und das Ende eines Text-Strings markieren.
+
+Lösen lässt sich das Problem aber durch `'`, bzw. die Kombination beider Zeichen:
+
+```
+"Dwayne 'The Rock' Johnson"
+```
+
+Das teilt **R** mit, dass die Zeichen _im_ String auch _Teil_ des Strings sind und eben nicht den String beenden.
+
+Die Konvention ist, auch wenn die beiden Zeichen im großen und ganzen auswechselbar sind, Strings mit `"` zu markieren und nur in Ausnahmen (wie dem Beispiel) `'` zu benutzen. Andere Ausnahmen können Argumente bestimmter Befehle/Funktionen betreffen, darauf soll hier aber nicht näher eingegangen werden und muss ggf. im Einzelfall berücksichtigt werden.
+
+**`` ` `` -- Backticks:**  
+so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String gehören, markieren `` ` ``, dass alle folgenden Zeichen zum gleichen Objekt (der Arbeitsumgebung) gehören.
+
+```
+`olle dingers` <- "Bobstein"
+`olle dingers`
+```
+
+# Die Basics
+
+## Zahlen bauen: All hail random number generators!
+
+Erstelle einen Vektor mit Würfelergebnissen: `5, 1, 2, 4, 6, 2, 3, 4, 4, 2`  
+und speichere ihn als Objekt "`würfel`"
+
+```{r a01_1}
+würfel <- c(5, 1, 2, 4, 6, 2, 3, 4, 4, 2)
+```
+
+Brechne als nächstes Mittelwert und Median der Werte.
+
+```{r a01_2}
+mean(würfel)
+median(würfel)
+```
+
+Diese Werte wurden mit der Funktion `sample` erstellt.  
+Schaue dir die Hilfe dazu an (`?sample`) und versuche, 100 Ergebnisse eines 6-seitigen Würfels zu generieren. Speichere die Ergebnisse in `würfel_100`.
+
+Hinweis: `1:6` = `c(1, 2, 3, 4, 5, 6)`
+
+```{r a01_3}
+würfel_100 <- sample(x = 1:6, size = 100, replace = TRUE)
+```
+
+<small>**Anbei**: Da wir *zufällige* Zahlen generieren, werdet ihr nicht die gleichen Zahlen erhalten wie eure NachbarInnen, und wenn ihr den Befehl mehrfach hintereinander ausführt erhaltet ihr auch jeweils unterschiedliche Ergebnisse! </small>
+
+Welchen Mittelwert würden wir erwarten? Überprüfe deine Vermutung mittels `mean`.
+
+Als nächstes schauen wir uns die Funktionen `rnorm` (sprich "random norm") und `runif` (sprich "random unif") in der Hilfe an (`?rnorm`, `?runif`).
+
+Was für Zahlen generieren diese Funktionen, bzw. worin unterscheiden sich die Funktionen?
+
+```{r a01_4}
+# rnorm: Normalverteilte Zufallszahlen:
+rnorm(n = 50, mean = 100, sd = 15)
+
+# runif: Gleichverteilte Zufallszahlen
+runif(n = 50, min = 0, max = 100)
+```
+
+Falls es euch interessiert: Der Intelligenzquotient (IQ) ist per Definition normalverteilt mit der *Mitte 100* und der *Standardabweichung 15*.
+Nutzt eure frischerworbenen `rnorm`-Skills um IQ-Werte vpn 50 Personen zu simulieren, und speichert die Werte als `iq` ab.
+
+```{r a01_5}
+iq <- rnorm(n = 50, mean = 100, sd = 15)
+```
+
+Überprüft ob unsere Bedingungen erfüllt sind mittels `mean` und `sd`.
+
+Ihr stellt fest, dass eure IQ-Werte keine ganzen Zahlen sind. Das ist schade. Wir mögen ganze Zahlen. Schaut euch `?round` an, und erstellt eine neue Version des Vektors, mit ausschließlich ganzen Zahlen.
+
+```{r a01_6}
+iq <- round(rnorm(n = 50, mean = 100, sd = 15))
+```
+
+## Datenstruktur
+
+Als nächstes bauen wir einen eigenen kleinen Datensatz mit fiktiven (sprich simulierten) Werten.
+Wir haben bereits `data.frame` benutzt um Tabellen zu erstellen, aber diesmal gehen wir einen Schritt weiter und benutzen `tibble`. Ein `tibble` ist im Grunde nur ein schickerer `data.frame`, mit einigen Verbesserungen, die man womöglich erst nach ein paar Monaten `data.frame` zu schätzen weiß, aber wie dem auch sei:
+
+Wir laden erstmal `dplyr`
+
+```{r, eval = TRUE}
+library(dplyr)
+```
+
+Das habt ihr auch in der Übung schonmal gemacht. Denkt daran, dass wir `dplyr` vorher *einmalig* installiert haben müsst! (`install.packages("dplyr")`)
+
+`dplyr` bringt unter anderem die `tibble`-Funktion mit, mit der wir unseren Datensatz erstellen können. Das soll am Ende im Datensatz `personen` landen:
+
+- `id`: Eine Sequenz von `1` bis `200` in 1er-Schritten (jede Person eine Nummer) (`?seq`!)
+- `iq`: Ganzzahlige IQ-Werte (siehe oben)
+- `farbe`: Eine Farbe zufällig ausgewählt zwischen `"rot"`, `"grün"` und `"blau"`
+- `alter`: Eine Zahl zwischen `20` und `49`. Entweder gleich- oder normalverteilt, wie ihr mögt.
+
+Falls ihr den subtilen Hinweis in der `id`-Spalte übersehen habt: Wir wollen am Ende 200 Zeilen haben.
+
+```{r, eval = TRUE}
+personen <- tibble(id = seq(from = 1, to = 200, by = 1),
+                   iq = round(rnorm(200, 100, 15)),
+                   farbe = sample(c("rot", "grün", "blau"), 200, replace = TRUE),
+                   alter = round(runif(200, min = 20, max = 49))
+            )
+```
+
+# Daten Angucken
+
+Wir sollten jetzt also einen Datensatz namens `personen` rumliegen haben. Schaut euch den Datensatz an, indem ihr oben rechts in RStudio auf `personen` klickt (es öffnet sich ein Tab neben eurem Script):
+
+![](https://dump.jemu.name/2018-05-fmr6jh1agkh49br.png)
+
+Wenn alles okay aussieht, können wir jetzt ein bisschen was damit anstellen!
+
+## Angucken: Roher Text der rohen Rohaftigkeit
+
+Das simpelste was ihr mit einem Datensatz tun könnt, ist ihn in `summary` zu stecken.  
+`summary` ist eine sogenannte *generic function*, die unterschiedliche Dinge tut, davon abhängig, was wir da reinstecken. Testes die Funktion einmal mit dem ganzen Datensatz und mit einzelnen Spalten.
+
+Denkt daran, dass ihr beispielsweise die `iq`-Spalte mit `personen$iq` ansteuern könnt.
+
+```{r a02_01}
+summary(personen)
+
+summary(personen$iq)
+summary(personen$farbe)
+```
+
+Okay, wie wäre es nun mit Häfugikeitstabellen?
+Dafür eignet sich `table`. Wir wollen erstmal nur eine Häufigkeitstabelle für `farbe`.
+
+```{r a02_02}
+table(personen$farbe)
+```
+
+Das Ergebnis dürfte wenig überraschend sein, wenn wir daran denken, wie wir die Spalte erstellt haben.
+
+## Irgendwas mit Bildern
+
+Häufigkeitstabellen und Quantile und Kram sind ja schön und gut, aber irgendwas mit Bildern und tausend Worten und so, wisst schon.
+
+Wir brauchen `ggplot2`! Also laden und wenn nötig vorher installieren.
+
+Installieren (falls nötig): `install.packages("ggplot2")`  
+Laden: `library(ggplot2)`
+
+Wir wollen erstmal nur ein paar Histogramme erstellen. Auf der [ggplot2-Website](http://ggplot2.tidyverse.org/reference/index.html) findet ihr alles was ihr dafür braucht! Sucht das `geom_*`-heraus, das ihr braucht, und guckt euch die Beispiele dazu an.
+
+Wir starten mal mit einem Histogramm für `iq`, und wir wollen eine Balkenbreite von `1`.
+
+```{r a02_03, eval = TRUE}
+ggplot(data = personen, aes(x = iq)) +
+  geom_histogram(binwidth = 1)
+```
+
+Als nächstes wollen wir dem Histogramm ein paar Labels geben, dazu brauchen wir die `labs`-Funktion.
+Wie wäre folgendes:
+
+- `title`: "IQ-Werte"
+- `subtitle`: "200 simulierte Werte"
+- `x`: "IQ"
+- `y`: "Häufigkeit"
+- `caption`: Wünscht euch was.
+
+```{r a02_04, eval = TRUE}
+ggplot(data = personen, aes(x = iq)) +
+  geom_histogram(binwidth = 1) +
+  labs(title = "IQ-Werte", subtitle = "200 simulierte Werte",
+       x = "IQ", y = "Häufigkeit", caption = "Lukas hat sich Mühe gegeben")
+```
+
+# Daten Anpassen
+
+So ein bisschen was können wir ja schon mit den Daten machen, aber was ist zum Beispiel, wenn wir Altersgruppen vergleichen wollen, aber nur rohe Zahlen haben? Für sowas können wir *klassieren*, und es gibt etliche unterschiedliche Herangehensweisen dafür. Solltet ihr mal in diese Richtung googlen, seid gewarnt, dass ihr womöglich viele unterschiedliche Ansätze findet.
+
+Für unseren Altersklassen-Fall benutz wir am besten einfach auch `dplyr`, weil wir das eh schon geladen haben. Es gibt zwei mögliche Funktionen dafür:
+
+- `case_when`: Für *Bedingungen*, Beispiel: "Alles kleiner als 10 soll zu 'klein' werden"
+- `recode`: Für *direkte Zuweisung*, Beispiel: "5 soll zu 'mittel' werden"
+
+Womöglich denkt ihr euch schon, dass in unserem Fall `case_when` angebrachter ist.  
+Zuerst brauchen wir aber einen kurzen Logik-Refresher. Seht euch bei Bedarf auch das [entsprechende Kapitel in der R-Intro an](https://r-intro.tadaa-data.de/book/erste-schritte.html#operatoren).
+
+Sagen wir mal, wir wollen jede Alterszahl in `personen$alter` in eine Dekade zusammenfassen. Wie selektieren wir also was wir wollen? Experimentiert mit den folgenden Operatoren:
+
+- `<` und `>`
+- `<=` und `>=`
+
+Mittels dieser Operatoren und eckigen Klammern (`[`, `]`) können wir zum Beispiel alle Leute zwischen 30 und 40 aus dem Datensatz filtern, das sähe etwa so aus:
+
+`personen[personen$alter >= 30 & personen$alter <= 40, ]`
+
+Das ist aber blöder Syntax, die eckigen Klammern und das `&` machen Dinge kompliziert.
+Um nur unsere Bedingungen zu testen ist `filter` aus `dplyr` da angenehmer. Wir können zum Beispiel sowas machen:
+
+`filter(personen, alter >= 30, alter <= 40)`
+
+Das macht inhaltlich *genau das gleiche* und sollte euch in der Konsole dann auch die entsprechenden Zeilen aus eurem Datensatz geben, für die die Bedingungen erfüllt sind.
+
+Versucht einmal Folgendes zur Übung:
+
+Wir wollen alle Leute aus `personen`, für die gilt...
+
+- `alter`: zwischen 25 und 35 (inklusive)
+- `iq`: größer als 100
+- `farbe`: "grün"
+
+```{r a03_1}
+filter(personen,
+       alter <= 35, alter >= 25,
+       iq > 100,
+       farbe == "grün")
+```
+
+Klar soweit? Okay.
+
+Dann können wir ja jetzt zum eigentlich interessanten Teil kommen: Klassieren!
+
+Benutzt `case_when` um die Spalte `alter_k` anzulegen, in der das Alter dekadenweise (20er, 30er, 40er) zusammengefasst wird. Eine neue Spalte könnt ihr einfach wie folgt anlegen:
+
+`personen$mein_neuer_spaltenname <- funktion_die_werte_macht`
+
+Experimentiert ggf. erstmal nur mit `case_when`, ohne etwas zuzuweisen.
+
+```{r s03_2, eval = TRUE}
+# Ganz explizite Lösung:
+personen$alter_k <- case_when(
+    personen$alter >= 40 & personen$alter <= 50 ~ "40er",
+    personen$alter >= 30 & personen$alter <= 40 ~ "30er",
+    personen$alter >= 20 & personen$alter <= 30 ~ "20er"
+  )
+
+# Kompaktere Lösung, die wegen der Reihenfolge der Bedingungen funktioniert:
+personen$alter_k <- case_when(
+    personen$alter >= 40 ~ "40er",
+    personen$alter >= 30 ~ "30er",
+    personen$alter >= 20 ~ "20er"
+  )
+```
+
+Kontrolliert ob alles richtig aussieht, indem ihr euch die unklassierte und die klassierte Spalte nebeneinander ausgeben lasst:
+
+`select(personen, alter, alter_k)`
+
+Passt? Passt.
+
+# Gruppierte Daten angucken
+
+In der Praxis ist es meistens nicht all zu spannend sich einzelne Variablen über einen kompletten Datensatz (*univariat*) anzuschauen, meistens sind Unterschiede zwischen Gruppen oder Zusammenhänge zwischen zwei Variablen (*bivariat*) spannender.  
+Mit unserer neuen klassierten Altersvariable können wir uns jetzt zum Beispiel solche Fragen angucken wie "Gibt es IQ-Unterschiede in den Altersgruppen?"
+
+Das können wir auch einmal textbasiert mittels `dplyr`-magic tun: Schaut euch `?summarize` an!  
+Ihr stellt fest, dass die Hilfe zur Funktion die *pipe* `%>%` benutzt. Das nehmen wir einfach mal so hin.
+
+Gruppiert `personen` nach Altersklassen (`alter_k`) und berechnet die gruppenspezifischen Mittelwerte und Standardabweichungen für `iq`!
+
+<small>**Anbei**: Die Funktionen `summarize` und `summarise` sind **identisch**, damit sowohl *Britisch English* als auch *American English*-Leute zufrieden sind</small>
+
+```{r a04_1, eval = TRUE}
+personen %>%
+  group_by(alter_k) %>%
+  summarize(Mittelwert = mean(iq),
+            Standardabweichung = sd(iq))
+```
+
+Okay, aber was, wenn wir uns jetzt für jede der Gruppen ein Histogramm anzeigen lassen wollen?  
+Klar könnten wir einfach filtern und dann mehrere Histogramme hintereinander machen, aber natürlich geht das auch in schöner.
+
+Schaut euch `facet_wrap` in `ggplot2` an, entweder via Hilfe (`?`) oder auf der Website (siehe oben).
+
+Die Aufgabe jetzt: 
+
+Erstellt Histogramme für die IQ-Werte der 3 Altersgruppen, wobei...
+
+- die *Füllfarbe* der Balken abhängig sein soll von `alter_k`
+- Jede Gruppe ihren eigenen Teilplot bekommt (`facet_wrap`)
+- Die 3 Teilplots in ***einer* Spalte** angezeigt werden
+- Die Balkenbreite wieder `1` beträgt
+- Labels eurer Wahl via `labs()` vergeben wurden.
+- Bonus Feature: Die Legende der Farbe *oben* sitzt
+- Bonus Feature: Wählt ein Theme eurer Wahl aus!
+
+
+```{r a04_2, eval = TRUE}
+ggplot(data = personen, aes(x = iq, fill = alter_k)) +
+  geom_histogram(binwidth = 1) +
+  facet_wrap(~alter_k, ncol = 1) +
+  labs(title = "IQ in Altersgruppen",
+       subtitle = "n = 200, klassiertes Alter",
+       x = "IQ", y = "Häufigkeit", fill = "Altersgruppe") +
+  theme_minimal() +
+  theme(legend.position = "top")
+```
+
+Das reicht erstmal.
+
+Wenn ihr das hier lest während die Veranstaltung gerade mal 20 Minuten jung ist, hat Lukas sich massiv in der Zeit verschätzt und ihr dürft euch beschweren.
