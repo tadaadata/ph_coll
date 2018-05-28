@@ -64,14 +64,16 @@ so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String g
 `olle dingers`
 ```
 
+Das macht das Variablen-ansteuern bei der praktischen Arbeit allerdings ziemlich umständlich und sollte daher auch vermieden und ggf. auch verändert werden.
+
 # Einige Aufgaben zur Wiederholung
 
-Grundsätzlich gilt: Googlen ist nicht nur völlig ok, sondern mitunter auch notwendig! Anders gesagt: eine Suchmaschine mit einer konkreten Frage zu füttern, um eine möglichst konkrete Frage beantwortet zu bekommen, ist nicht nur generell echt hilfreich, sondern integraler Bestandteil des lernens von **R**!
+Grundsätzlich gilt: Googlen ist nicht nur völlig ok, sondern mitunter auch notwendig! Vorallem aber die Hilfe-Funktion sollte hier... (wait for it) ...hilfreich sein -- wir erinnern uns: `?rnorm`. Anders gesagt: eine Suchmaschine mit einer konkreten Frage zu füttern, um eine möglichst konkrete Frage beantwortet zu bekommen, ist nicht nur generell echt hilfreich, sondern integraler Bestandteil des lernens von **R**!  
 
 ## Variablen/Vektoren/Obejekte erstellen
 
 möglicherweise nützliche Funktionen:  
-`sample()`, `rep()`, `seq()`, `runif()`, `data.frame()`, `ifelse()`
+`sample()`, `rep()`, `c()`, `seq()`, `runif()`, `data.frame()`, `ifelse()`, `data.frame()`
 
 1. Erstelle 100 _normalverteilte Zufallsvariablen_ und lege sie als Objekt in deiner Arbeitsumgebung ab:
     a) mit dem Mittelwert 90 und der Standardabweichung 15
@@ -88,13 +90,6 @@ möglicherweise nützliche Funktionen:
     a) erstelle einen Datensatz und nenne die Variablen `id`, `geschlecht`, `gruppe`, `farbe`, `kekskrümel` und `iq`
     b) ändere die Werte aus Variable 2e, sodass 0 zu "männlich" und 1 zu "weiblich" wird
 
-## Daten einlesen
-
-1. Lade den `qmsurvey`-Datensatz und den zugehörigen Fragebogen aus stud.ip herunter
-2. Lies den Datendatz via `readr` ein und gib ihm einen sinnvollen/praktischen Namen
-3. Verschaffe dir einen Überblick:  
-    a) Was wurde alles abgefragt?  
-    b) Lässt sich (vermutlich) mit den Daten arbeiten? Muss noch was aufgebessert werden?  
   
 ## Überblick verschaffen
 
@@ -103,4 +98,22 @@ möglicherweise nützliche Funktionen:
     a<sub>2</sub>) Was passiert, wenn man `summary()` auf eine **kontinuierliche** Variable anwendet?  
     b<sub>1</sub>) Was passiert, wenn man `table()` auf eine **kategoriale** Variable anwendet?  
     b<sub>2</sub>) Was passiert, wenn man `table()` auf eine **kontinuierliche** Variable anwendet?
+2. Daten veranschaulichen:
+    a) zeichne ein Histogramm der Variable `iq` und färbe es blau ein
+    b) zeichne ein Balkendiagramm der Variable `Gruppe`, aufgeteilt nach Geschlecht
+    c) vergleiche die Verteilung der Variable `iq` zwischen Keksen und Krümeln
 
+
+
+# !! Fortgeschritten !!
+
+Wenn du diesen Teil erreicht hast, war es wohl zu einfach. `r emo::ji("sweat")`  
+Sag eben kurz vorne bescheid, dass du so weit durch bist.
+
+## Daten einlesen
+
+1. Lade den `qmsurvey`-Datensatz und den zugehörigen Fragebogen aus stud.ip herunter
+2. Lies den Datendatz via `readr` ein und gib ihm einen sinnvollen/praktischen Namen
+3. Verschaffe dir einen Überblick:  
+    a) Was wurde alles abgefragt?  
+    b) Lässt sich (vermutlich) mit den Daten arbeiten? Muss noch was aufgebessert werden?  
