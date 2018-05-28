@@ -66,14 +66,27 @@ so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String g
 
 # Einige Aufgaben zur Wiederholung
 
+Grundsätzlich gilt: Googlen ist nicht nur völlig ok, sondern mitunter auch notwendig! Anders gesagt: eine Suchmaschine mit einer konkreten Frage zu füttern, um eine möglichst konkrete Frage beantwortet zu bekommen, ist nicht nur generell echt hilfreich, sondern integraler Bestandteil des lernens von **R**!
+
 ## Variablen/Vektoren/Obejekte erstellen
+
+möglicherweise nützliche Funktionen:  
+`sample()`, `rep()`, `seq()`, `runif()`, `data.frame()`, `ifelse()`
 
 1. Erstelle 100 _normalverteilte Zufallsvariablen_ und lege sie als Objekt in deiner Arbeitsumgebung ab:
     a) mit dem Mittelwert 90 und der Standardabweichung 15
-    b) mit dem Mittelwert 110 und der Standardabweichung 15
+    b) mit dem Mittelwert 110 und der Standardabweichung 15  
+    c) runde beide Objekte auf ganze Zahlen  
+    d) kombiniere beide Objekte zu einem einzelnen
 2. Erstelle **ein** Objekt, in dem...
-    a) je 100x _abwechselnd_ die Wörter "rot" und "grün" vorkommen
+    a) _je_ 100x _abwechselnd_ die Wörter "Krümel" und "Keks" vorkommen
     b) _erst_ 100x "rot" und _dann_ 100x "grün" vorkommt 
+    c) die Zahlen 1 bis 200 in 1er Schritten vorkommen
+    d) 200x zufällig aus A, B, C und D ausgewählt wird
+    e) 200x zufällig aus 0 und 1 gewählt wird
+3. Mit den Objekten aus 1. und 2.: 
+    a) erstelle einen Datensatz und nenne die Variablen `id`, `geschlecht`, `gruppe`, `farbe`, `kekskrümel` und `iq`
+    b) ändere die Werte aus Variable 2e, sodass 0 zu "männlich" und 1 zu "weiblich" wird
 
 ## Daten einlesen
 
@@ -90,3 +103,4 @@ so ähnlich, wie `"` markiert, dass alle folgenden Zeichen zum gleichen String g
     a<sub>2</sub>) Was passiert, wenn man `summary()` auf eine **kontinuierliche** Variable anwendet?  
     b<sub>1</sub>) Was passiert, wenn man `table()` auf eine **kategoriale** Variable anwendet?  
     b<sub>2</sub>) Was passiert, wenn man `table()` auf eine **kontinuierliche** Variable anwendet?
+
