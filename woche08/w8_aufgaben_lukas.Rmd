@@ -1,7 +1,7 @@
 ---
 title: 'Woche 8: Wiederholungsaufgaben'
 author: "Lukas"
-date: "2018-05-28"
+date: "Aktualisiert: `r format(Sys.time(), '%F %T %Z')`"
 output: 
   html_document:
     theme: cosmo
@@ -180,7 +180,7 @@ Wenn alles okay aussieht, können wir jetzt ein bisschen was damit anstellen!
 ## Angucken: Roher Text der rohen Rohaftigkeit
 
 Das simpelste was ihr mit einem Datensatz tun könnt, ist ihn in `summary` zu stecken.  
-`summary` ist eine sogenannte *generic function*, die unterschiedliche Dinge tut, davon abhängig, was wir da reinstecken. Testes die Funktion einmal mit dem ganzen Datensatz und mit einzelnen Spalten.
+`summary` ist eine sogenannte *generic function*, die unterschiedliche Dinge tut, davon abhängig, was wir da reinstecken. Testet die Funktion einmal mit dem ganzen Datensatz und mit einzelnen Spalten.
 
 Denkt daran, dass ihr beispielsweise die `iq`-Spalte mit `personen$iq` ansteuern könnt.
 
@@ -290,9 +290,9 @@ Experimentiert ggf. erstmal nur mit `case_when`, ohne etwas zuzuweisen.
 ```{r s03_2, eval = TRUE}
 # Ganz explizite Lösung:
 personen$alter_k <- case_when(
-    personen$alter >= 40 & personen$alter <= 50 ~ "40er",
-    personen$alter >= 30 & personen$alter <= 40 ~ "30er",
-    personen$alter >= 20 & personen$alter <= 30 ~ "20er"
+    personen$alter >= 40 & personen$alter < 50 ~ "40er",
+    personen$alter >= 30 & personen$alter < 40 ~ "30er",
+    personen$alter >= 20 & personen$alter < 30 ~ "20er"
   )
 
 # Kompaktere Lösung, die wegen der Reihenfolge der Bedingungen funktioniert:
