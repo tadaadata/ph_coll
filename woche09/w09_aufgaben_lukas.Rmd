@@ -1,0 +1,34 @@
+---
+title: 'Woche 9: Statistik!'
+author: "Lukas"
+date: "Aktualisiert: `r format(Sys.time(), '%F %T %Z')`"
+output: 
+  html_document:
+    theme: cosmo
+    code_folding: hide
+    toc: true
+    toc_float: true
+    number_sections: true
+editor_options: 
+  chunk_output_type: console
+---
+
+Kurzlink zu dieser Seite: <https://tadaa.click/ph9_lukas>
+
+```{r include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, 
+                      message = FALSE, 
+                      error = FALSE, 
+                      warning = FALSE)
+library(dplyr)
+library(ggplot2)
+```
+
+# Der Datensatz
+
+Den Datensatz findet ihr im stud.ip oder auf [data.tadaa-data.de](https://data.tadaa-data.de/#qm-survey-neuauflage-2017-2018). Wir wollen die **2018**er Version des `qmsurvey` Datensatzes. Den Fragebogen auf dem der Datensatz basiert findet ihr [hier als PDF](https://public.tadaa-data.de/surveys/qmsurvey2018.pdf).
+
+
+## Was'n da los
+
+Schaut euch erstmal die Variablen im Datensatz an. Was wurde erfasst, welche Skalenniveaus haben die Variablen, und was könnte da wie zusammenhängen.
