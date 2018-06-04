@@ -11,6 +11,8 @@ output:
     toc_float: true
 ---
 
+Kurzlink zu dieser Seite: <https://tadaa.click/ph8_tobi>
+
 # R-Syntax
 
 Zeichen  | Bedeutung     | Beispiel
@@ -75,7 +77,7 @@ Grundsätzlich gilt: Googlen ist nicht nur völlig ok, sondern mitunter auch not
 möglicherweise nützliche Funktionen:  
 `sample()`, `rep()`, `c()`, `seq()`, `runif()`, `data.frame()`, `ifelse()`, `data.frame()`
 
-1. Erstelle 100 _normalverteilte Zufallsvariablen_ und lege sie als Objekt in deiner Arbeitsumgebung ab:
+1. Erstelle 100 _normalverteilte Zufallswerte_ und lege sie als Objekt in deiner Arbeitsumgebung ab:
     a) mit dem Mittelwert 90 und der Standardabweichung 15
     b) mit dem Mittelwert 110 und der Standardabweichung 15  
     c) runde beide Objekte auf ganze Zahlen  
