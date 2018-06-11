@@ -16,19 +16,310 @@ editor_options:
 Kurzlink zu dieser Seite: <https://tadaa.click/ph9_lukas>
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(eval = FALSE, 
+knitr::opts_chunk$set(eval = TRUE, 
                       message = FALSE, 
                       error = FALSE, 
                       warning = FALSE)
 library(dplyr)
 library(ggplot2)
+library(sjPlot)
+library(sjlabelled)
+
+qmsurvey <- readRDS(url("https://data.tadaa-data.de/qm_survey_ss2018.rds"))
 ```
 
 # Der Datensatz
 
 Den Datensatz findet ihr im stud.ip oder auf [data.tadaa-data.de](https://data.tadaa-data.de/#qm-survey-neuauflage-2017-2018). Wir wollen die **2018**er Version des `qmsurvey` Datensatzes. Den Fragebogen auf dem der Datensatz basiert findet ihr [hier als PDF](https://public.tadaa-data.de/surveys/qmsurvey2018.pdf).
 
+#### Spoiler
+
+R-Code für das direkte einlesen des Datensatzes von der Website, für den Fall das stud.ip noch rumnervt:
+
+```
+qmsurvey <- readRDS(url("https://data.tadaa-data.de/qm_survey_ss2018.rds"))
+```
+
 
 ## Was'n da los
 
 Schaut euch erstmal die Variablen im Datensatz an. Was wurde erfasst, welche Skalenniveaus haben die Variablen, und was könnte da wie zusammenhängen.
+
+# Statistische Tests <small>(endlich)</small>
+
+Im Folgenden das übliche Programm: Erklärungen meinerseits, und dann einige Aufgaben mit eingebautem "Klick auf den *Code*-Button um den Code zu sehen"-Feature.
+
+## $\chi^2-Test$
+
+Wir kümmern uns hier erstmal nur um den Zwei-Stichproben Test auf Unabhängigkeit, der Anwendungsfall ist also die Frage, ob zwei nominalskalierte Variablen statistisch abhängig sind oder nicht.
+
+Die dazugehörige Funktion ist `chisq.test` in Base R (i.e. kein weiteres Package ist notwendig).  
+Schaut euch die Hilfe unter `chisq.test` an und versucht herauszufinden, wie der Spaß funktioniert.  
+Als nächstes wollen wir uns einige Variablen aus `qmsurvey` anschauen. Wie wäre es mit folgenden nominalskalierten Variablen in beliebiger Kombination:
+
+- `ons`: `r unname(get_label(qmsurvey$ons))`
+- `rauchen`: `r unname(get_label(qmsurvey$rauchen))`
+- `cannabis`: `r unname(get_label(qmsurvey$cannabis))`
+- `bstatus`: `r unname(get_label(qmsurvey$bstatus))`
+- `instrument`: `r unname(get_label(qmsurvey$dusche))`
+- `dusche`: `r unname(get_label(qmsurvey$dusche))`
+
+Testet via `chisq.test` jeweils zwei dieser Variablen auf Abhängigkeit, je nachdem was ihr am interressantesten findet.
+
+Das Ergebnis sieht dann in etwa so aus:
+
+```{r chis1}
+chisq.test(qmsurvey$ons, qmsurvey$bstatus)
+
+# Alternative: (macht exakt dasselbe)
+# chisq.test(table(qmsurvey$ons, qmsurvey$bstatus))
+```
+
+Der Test an sich ist ja schön und gut, aber in der Regel wollen wir auch eine Kontigenztabelle dazu haben. Wir könnten eine einfache Kreuztabelle via `table` erstellen, aber die ist uns ein bisschen zu spartanisch.  
+
+Schicker ist da `sjt.xtab` aus dem `sjPlot`-Package für genau diesen Anwendungsfall. 
+Die Funktion kann im einfachsten Fall sowas:
+
+```{r chis2, echo = FALSE}
+library(sjPlot)
+
+sjt.xtab(qmsurvey$ons, qmsurvey$bstatus)
+```
+
+Man bemerke, wie die Funktion unsere Variablenlabels gleich mit anzeigt, was etwas hübscher ist als die puren Variablennamen (`ons`, `bstatus`).
+
+Die Funktion ist ziemlich mächtig, und kann z.B auch sowas:
+
+```{r chis3, echo = FALSE}
+sjt.xtab(qmsurvey$ons, qmsurvey$bstatus, show.row.prc = TRUE, show.exp = TRUE, show.legend = TRUE)
+```
+
+Versucht die obige Tabelle mit folgenden Optionen zu reproduzieren:
+
+- Variablen: `qmsurvesy$ons` und `qmsurvey$bstatus`
+- Erwartete Häufigkeiten sollen angezeigt werden
+- Zeilenweise relative Häufigkeiten
+- Legende für die unterschiedlichen Werte
+
+
+```{r chis3_b, eval = FALSE}
+sjt.xtab(qmsurvey$ons, qmsurvey$bstatus, show.row.prc = TRUE, show.exp = TRUE, show.legend = TRUE)
+```
+
+## t-Test
+
+Der t-Test taucht immer wieder auf und dient der Fragestellung "*Unterscheiden sich zwei Gruppen in Hinblick auf eine intervallskalierte Variable*".  
+Klassische Anwendungsfälle sind etwa geschlechtsspezifische Unterschiede oder Vorher-Nachher Designs. In diesem Abschnitt schauen wir uns nur die Variante für zwei Stichproben an, der Einstichproben-Test ist eher einfacher als komplizierter.
+
+Da die `gender`-Variable in `qmsurvey` drei Merkmalsausprägungen hat ignorieren wir mal den klischeeträchtigen Geschlechterteil und untersuchen liebe andere dichotome Variablen.
+
+Wie wäre es mit:
+
+- Dichotome Variable: `todesstrafe` – `r unname(get_label(qmsurvey$todesstrafe))`
+- Intervallskalierte Variable: `psyche` – `r unname(get_label(qmsurvey$psyche))`
+
+Die Funktion dafür ist auch wieder ohne Zusatzpackage verfügbar: `t.test`
+
+Seht euch die Hilfe an und versucht, den Test durchzuführen.  
+Das Ergebnis sollte in etwa so aussehen:
+
+```{r t-test1}
+t.test(psyche ~ todesstrafe, data = qmsurvey)
+```
+
+Eine Sache zur Notation:  
+In der Hilfe findet ihr die *formula*-Notation. Die taucht immer wieder auf, und sieht schematisch so aus:
+
+`AV ~ UV`
+
+<small>Anbei: Das in der Mitte ist eine Tilde (~). Auf einem Mac ist das `alt + n`, und auf Windows auch irgendwo zu finden. Google im Zweifelsfall.</small>
+
+Das heißt: Wir wollen die *abhängige Variable* (AV) durch die *unabhängige Variable* (UV) erkären. Und das ist genau das was der t-Test macht: Gibt es Unterschiede in der AV (`psyche`) abhängig von der UV (`todesstrafe`).
+
+Die Funktion hat darüberhinaus noch diverse andere Argumente, wovon ein paar für dieses Szenario sinnvoll sein könnten.
+
+Versuchte folgende Tests mit den gleichen Variablen:
+
+- t-Test für *gleiche* Varianzen mit *ungerichteter Hypothese*
+
+```{r t-test2}
+t.test(psyche ~ todesstrafe, data = qmsurvey, var.equal = TRUE, alternative = "two.sided")
+```
+
+- t-Test für *ungleiche* Varianzen (Welch-Test) mit *linksseitigem Test*
+
+```{r t-test3}
+t.test(psyche ~ todesstrafe, data = qmsurvey, var.equal = FALSE, alternative = "less")
+```
+
+### Varianzgedöns
+
+Die Frage ob wir einen "*normalen*" oder einen *Welch*-Test machen hängt davon ab, ob *Varianzhomogenität* (oder in mehr Fremdwort: *Homoskedastizität*) vorliegt.  
+Das können wir relativ schnell mit einem *Levene-Test* klären, den finden wir im Package `car` als `leveneTest`.  
+
+Testet unsere beiden Variablen auf Varianzhomogenität und entscheidet dann, welcher der beiden Tests angemessen ist:
+
+```{r}
+library(car)
+
+leveneTest(psyche ~ todesstrafe, data = qmsurvey)
+```
+
+### Effekte und Teststärke
+
+Die Effektgröße beim t-Test ist schnell via *Cohen's d* bestimmt, aber da gibt's keine fertige Funktion für, das heißt ihr müsstet tatsächlich \*gasp\* Mathematik benutzen.  
+
+Glücklicherweise haben wir da was in der `tadaatoolbox`, dem studifreundlichen Package-Versuch von Tobi und mir. Das Package müsst ihr natürlich installieren, falls noch nicht geschehen:
+
+```
+install.packages("tadaatoolbox")
+```
+
+Die Funktion `tadaa_t.test` ist ein *Wrapper* für `t.test` mit einigen extra bells & whistles.  
+Das heißt konkret folgendes:
+
+- Die Funktion benutzt intern auch nur `t.test`, das heißt die Ergebnisse sollten identisch sein
+- Wir testen automatisch via *Levene* welcher Test der richtige wäre
+- Wir geben auch Effektgröße und Teststärke an.
+
+Probiert die Funktion für unsere beiden Variablen aus, ein zweiseitiger Test sollte reichen:
+
+```{r tadaa_t}
+library(tadaatoolbox)
+
+tadaa_t.test(qmsurvey, response = psyche, group = todesstrafe, print = "console")
+```
+
+Die Funktion gibt euch auch Output passend für ein RMarkdown-Dokument, was auch die eigentliche Motivation hinter der Funktion ist. Wir ihr seht ist das Output für `print = "console"` etwas... unsauber. Um das entsprechend etwas schönere Output zu sehen, müsst ihr euch aber in einem RMarkdown-Dokument befinden, in der Konsole wird einfach nichts angezeigt, wenn ihr `print = "markdown"` benutzt:
+
+```{r tadaa_t_md}
+tadaa_t.test(qmsurvey, response = psyche, group = todesstrafe, print = "markdown")
+```
+
+So sollte euch die Funktion alles anzeigen, was ihr für einen t-Test brauchen könntet.
+
+Mehr Tests aus dem Package für RMarkdown-kompatibles Output mit Beispielen findet ihr [hier](http://tadaatoolbox.tadaa-data.de/articles/test_output.html).
+
+### Gepaart und ungepaart
+
+Einen gepaarten oder *abhängigen* Test können wir ganz einfach machen, indem wir in `t.test` oder `tadaa_t.test` das Argument `paired = TRUE` benutzen.  
+Leider haben wir in `qmsurvey` keine passenden Variablen dafür, und da es auch nicht mehr ist als ein Argument zu ändern belassen wir's auch einfach mal dabei.
+
+### Bucklige, nichtparametrische Verwandtschaft
+
+Womöglich erinnert ihr euch dunkel an die Vorlesung, wo der *Wilcoxon*-Test als nichtparametrische Alternative zum t-Test besprochen wurde (hoffentlich).  
+
+Sollte eueren Skalenniveaus oder Normalverteilungsannahmen als den Bach runter gegangen sein, können wir darauf zurückgreifen. Angenehmerweise liegt der Test auch in Standard-R als `wilcox.test` und lässt sich praktisch genauso benutzen wie t-Test, ihr solltet also keine Probleme haben unseren t-Test von weiter oben nochmal als Wilcoxon-Test durchzuführen:
+
+```{r wilcox}
+wilcox.test(psyche ~ todesstrafe, data = qmsurvey)
+```
+
+Das war nun ein Wilcoxon-Rangsummentest. Womöglich findet ihr den auch als *Mann-Whitney-Wilxocon U-Test* oder so. Nomenklatur ist kompliziert.  
+Den *abhängigen* Test gibt's auch, das wäre der *Wilcoxon-Vorzeichentest* (oder so, je nach Buch) und auch der lässt sich mit der gleichen Funktion erledigen, einfach nur mittel `paired = TRUE`-Argument. 
+
+Die nichtaparemtrischen Tests schauen sich Median anstatt Mittelwerte und Standardabweichung an, was die entsprechend flexibler, aber eben auch weniger spannend macht.
+
+## Korrelation und Regression
+
+Das vermutlich mächtigste Werkzeug in dieser Liste ist die lineare Regression. Das Thema ist ziemlich komplex, aber zum Glück bin ich nicht hier um euch die Inhalte zu erklären, sondern nur für die Anwendung da.
+
+Da ihr Korrelationen via Pearson's $r$ schon kennt, habt ihr schonmal einen Baustein der Regression. Korrelation beschreibt den Zusammenhang zwischen zwei intervallskalierten (in der Regel) Variablen, also suchen wir uns da mal welche aus `qmsurvey`:
+
+- `bdauer`: `r unname(get_label(qmsurvey$bdauer))`
+- `alter`: `r unname(get_label(qmsurvey$alter))`
+- `psyche`: `r unname(get_label(qmsurvey$psyche))`
+- `statistik`: `r unname(get_label(qmsurvey$statistik))`
+- `arbeit`: `r unname(get_label(qmsurvey$arbeit))`
+- `freundeskreis`: `r unname(get_label(qmsurvey$freundeskreis))`
+- `schlafstunden`: `r unname(get_label(qmsurvey$schlafstunden))`
+
+Ihr könnt euch da aussuchen was ihr wollt, im Datensatz gibt es etliche Variablen, die sich hierfür eignen.  
+Zu Demozwecken nehme ich mal `arbeit` und `schlafstunden` – die Idee dahinter wäre, dass Leute, die viel Arbeiten, weniger Schlaf abbekommen.  
+
+Pearson's $r$ bekommen wir einfach via `cor()`: Die Funktion will einfach nur zwei Variablen als Input und ihr bekommt $r$. Sauber.
+
+```{r r_1}
+cor(qmsurvey$arbeit, qmsurvey$schlafstunden)
+```
+
+Man beachte, dass die Reihenfolge der Variablen in der Funktion egal ist.  
+Alternativ könnt ihr auch Spearman's $\rho$ (Rho) bekommen, für rangbasierte Korrelation. Dafür müsst ihr nur das `method`-Argument anpassen, entsprechen der Dokumentation in `cor`.
+
+```{r rho}
+cor(qmsurvey$arbeit, qmsurvey$schlafstunden, method = "spearman")
+```
+
+Was aber, wenn ihr einen Signifikanztest für die Korrelation wollt?  
+Dafür gibt's dann `cor.test`, was sich *genauso* benutzen lässt wie `cor`, aber mit Signifikanztest-Kram drumrum als Ergebnis. Ist der Zusammenhang zwischen `arbeit` und `schlafstunden` signifikant?
+
+```{r r_cor}
+cor.test(qmsurvey$arbeit, qmsurvey$schlafstunden)
+```
+
+### Regression
+
+Korrelation und Signifikanztest einzeln ist schön und gut, aber in der Regel findet beides im Kontext der Regression Anwendung. Für eine Regression müssen wir als erstes ein *Modell* definieren, was wieder die *formula*-Sache vom t-test benutzt, wir erinnern uns an weiter oben:
+
+`AV ~ UV`
+
+Wir würden also in diesem Beispiel dagen, dass `schlafstunden` abhängig ist und von `arbeit` beeinflusst wird. Unser Modell stecken wir als nächstes in die Funktion `lm`, für *linear model*. Die Funktion kann deutlich mehr als lineare Regression, aber das braucht ihr entweder nie oder findet's schon raus wenn's soweit ist. Wir machen erstmal nur einfachen Kram. 
+
+Schaut euch `?lm` an, ihr braucht nur `formula` und `data` als Argumente, der Rest ist komplizierte Kram den wir nicht brauchen. **Speichert** das Modell-Output als `model1` in eurem Environment! Der Teil ist wichtig, den mit dem Modell lässt sich einiges anstellen.
+
+```{r lm1}
+model1 <- lm(schlafstunden ~ arbeit, data = qmsurvey)
+```
+
+Wir haben jetzt erstmal nur unser Modellobjekt gespeichert, wir haben noch kein Output. Dafür gibt's mehrere Möglichkeiten:
+
+1. Gebt einfach `model1` in der Konsole ein und drückt *Enter*. Ihr seht nicht viel neben eureren Koeffizienten.
+2. Gebt `summary(model1)` in der Konsole ein. Ihr bekommt etwas mehr Output.
+
+`summary` kennt ihr vielleicht noch von neulich, die Funktion ist ziemlich praktisch und holt hier die wichtigsten Infos aus dem Modellobjekt.
+
+Alternativ können wir auch `sjt.lm` aus `sjPlot` benutzen:
+
+```{r sjtlm}
+sjt.lm(model1)
+```
+
+Auch hier ist `sjPlot` etwas schöner, gibt uns Variablenlabels und sowieso und überhaubt.
+
+Aber bleiben wir erstmal bei `summary(model1)`, weil das das Output ist, was ihr in der freien Wildbahn vermutlich am häufigsten sehen werden:
+
+```{r model1_summary}
+summary(model1)
+```
+
+Vergleicht das Output mit dem von `cor.test` von oben: Welche Werte tauchen wieder auf?
+
+### Plots!
+
+Okay, und wozu das ganze Regressionsgedöns jetzt?
+
+In erster Linie haben wir damit den linearen Zusammenhang zwischen den beiden Variablen untersucht, und der lässt sich auch wunderbar visualisieren.  
+Packt eure `ggplot2`-Hüte aus und schaut euch [die Beispiel zu `geom_smooth`](http://ggplot2.tidyverse.org/reference/geom_smooth.html) an.
+
+Die Aufgabe ist jetzt folgender Plot:
+
+- Scatterplot (Hint: Punkte, *points*) für `arbeit` und `schlafsstunden`
+- Regressions*gerade* durch die Punkte, optional in rot
+- Angemessene Labels
+
+Das Ergebnis sollte in etwa so aussehen:
+
+```{r lm_plot}
+library(ggplot2)
+
+ggplot(data = qmsurvey, aes(x = arbeit, y = schlafstunden)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE, color = "red") +
+  labs(title = "Arbeit und Schlafstunden",
+       x = "Arbeitsstunden pro Woche",
+       y = "Schlafstunden pro Nacht") +
+  theme_tadaa()
+```
+
+Und sieheda, wir haben tatsächlich einen leichten negativen Zusammenhang, wie anfangs vermutet.  
+Angenehm.
