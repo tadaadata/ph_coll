@@ -49,7 +49,7 @@ Schaut euch erstmal die Variablen im Datensatz an. Was wurde erfasst, welche Ska
 
 Im Folgenden das übliche Programm: Erklärungen meinerseits, und dann einige Aufgaben mit eingebautem "Klick auf den *Code*-Button um den Code zu sehen"-Feature.
 
-## $\chi^2-Test$
+## $\chi^2$-Test
 
 Wir kümmern uns hier erstmal nur um den Zwei-Stichproben Test auf Unabhängigkeit, der Anwendungsfall ist also die Frage, ob zwei nominalskalierte Variablen statistisch abhängig sind oder nicht.
 
