@@ -5,7 +5,7 @@ date: "Aktualisiert: `r format(Sys.time(), '%F %T %Z')`"
 output: 
   html_document:
     theme: cosmo
-    code_folding: hide
+    code_folding: show
     toc: true
     toc_float: true
     number_sections: true
@@ -26,6 +26,69 @@ library(sjPlot)
 library(sjlabelled)
 library(tadaatoolbox)
 library(car)
+library(tibble)
 
 qmsurvey <- readRDS(url("https://data.tadaa-data.de/qm_survey_ss2018.rds"))
+
+participation <- as_tibble(readRDS(url("https://data.tadaa-data.de/participation.rds")))
 ```
+
+
+# Der Datensatz
+
+Der Datensatz für diese Woche beinhaltet die Tutorienteilnahmezahlen für die letzten drölf Semester der Statistiktutorien bei den Psychos. Den Datensatz bekommt ihr via:
+
+```
+participation <- readRDS(url("https://data.tadaa-data.de/participation.rds"))
+```
+
+Ein kurzer Blick auf den Datensatz:
+
+```{r}
+head(participation) %>%
+  knitr::kable()
+```
+
+```{r}
+ggplot(data = participation, aes(x = Aufgabenblatt, y = Teilnehmerzahl)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE, color = "red") +
+  facet_grid(Studienjahr ~ Semester) +
+  theme_tadaa()
+```
+
+# Ein Lineares Modell zum warmwerden
+
+```{r}
+model_lm <- lm(Teilnehmerzahl ~ Aufgabenblatt, data = participation)
+
+summary(model_lm)
+
+library(broom)
+tidy(model_lm)
+glance(model_lm)
+```
+
+# ANOVA
+
+Wir gucken uns mal die Teilnehmerzahl abhängig vom Wochentag an:
+
+```{r}
+model_tag <- aov(Teilnehmerzahl ~ Tag, data = participation)
+
+summary(model_tag)
+```
+
+But wait, there's more!  
+ANOVA gibt's in verschiedenen Geschmacksrichtungen, namentlich mit unterschiedlichen Summentypen (sums of squares). Wie funktionieren die? Weiß der Geier (kann man aber googlen). Long story short: Die `aov`-Funktion macht nur(!) **Type 1** sums of squares. SPSS hingegen benutzt per default **Type 3** sums of squares. Das ist meistens (nicht immer, manchmal nicht, aber meistens schon, aber nicht immer) auch die richtige Wahl.
+In R brauchen wir dafür das package `car`, und wir bauen das Modell erstmal als `lm`:
+
+```{r}
+library(car)
+
+model_tag <- Anova(lm(Teilnehmerzahl ~ Tag, data = participation), type = 3)
+
+model_tag
+```
+
+Das macht in unserem Fall sogar mal so gar keinen Unterschied, was daran liegt, dass das mit den Summentypen nur für Interaktionseffekte (sprich mehrfaktorielle ANOVA) relevant ist. Aber immerhin.
