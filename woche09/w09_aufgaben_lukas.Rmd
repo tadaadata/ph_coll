@@ -24,6 +24,7 @@ library(dplyr)
 library(ggplot2)
 library(sjPlot)
 library(sjlabelled)
+library(tadaatoolbox)
 
 qmsurvey <- readRDS(url("https://data.tadaa-data.de/qm_survey_ss2018.rds"))
 ```
@@ -73,6 +74,9 @@ chisq.test(qmsurvey$ons, qmsurvey$bstatus)
 
 # Alternative: (macht exakt dasselbe)
 # chisq.test(table(qmsurvey$ons, qmsurvey$bstatus))
+
+
+tadaa_chisq(qmsurvey, ons, bstatus, print = "markdown")
 ```
 
 Der Test an sich ist ja schön und gut, aber in der Regel wollen wir auch eine Kontigenztabelle dazu haben. Wir könnten eine einfache Kreuztabelle via `table` erstellen, aber die ist uns ein bisschen zu spartanisch.  
@@ -91,7 +95,8 @@ Man bemerke, wie die Funktion unsere Variablenlabels gleich mit anzeigt, was etw
 Die Funktion ist ziemlich mächtig, und kann z.B auch sowas:
 
 ```{r chis3, echo = FALSE}
-sjt.xtab(qmsurvey$ons, qmsurvey$bstatus, show.row.prc = TRUE, show.exp = TRUE, show.legend = TRUE)
+sjt.xtab(qmsurvey$ons, qmsurvey$bstatus, 
+         show.row.prc = TRUE, show.exp = TRUE, show.legend = TRUE)
 ```
 
 Versucht die obige Tabelle mit folgenden Optionen zu reproduzieren:
@@ -143,7 +148,8 @@ Versuchte folgende Tests mit den gleichen Variablen:
 - t-Test für *gleiche* Varianzen mit *ungerichteter Hypothese*
 
 ```{r t-test2}
-t.test(psyche ~ todesstrafe, data = qmsurvey, var.equal = TRUE, alternative = "two.sided")
+t.test(psyche ~ todesstrafe, data = qmsurvey, var.equal = TRUE, 
+       alternative = "two.sided")
 ```
 
 - t-Test für *ungleiche* Varianzen (Welch-Test) mit *linksseitigem Test*
