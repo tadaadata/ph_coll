@@ -160,3 +160,36 @@ participation %>%
 ```
 
 Welp, nope. Einige Zellen mit nur einer Beobachtung, das kann nicht funktionieren.
+
+Vielleicht lieber `Semester` (WiSe/SoSe) und `Studienjahr`?
+
+```{r}
+model <- lm(Teilnehmerzahl ~ Studienjahr * Semester, data = participation)
+
+Anova(model, type = 3)
+```
+
+Okay. Und wie sieht das jetzt mit Effektgrößen ($\eta^2$) aus? 
+
+```{r}
+library(DescTools)
+
+EtaSq(model, type = 3) # type 3 wieder für die Summentypen
+```
+
+Well shucks. Noch ein Problem: **Kontraste** (`contrasts`).
+
+Die kurze Version:
+
+```{r}
+options(contrasts = c("contr.sum", "contr.sum"))
+
+model <- lm(Teilnehmerzahl ~ Studienjahr * Semester, data = participation)
+Anova(model, type = 3)
+EtaSq(model, type = 3) # type 3 wieder für die Summentypen
+```
+
+Kontraste sind ein komplexes Ding und man kann da sehr viel falsch oder richtig machen, und "richtig machen" hängt wiederum stark davon ab, was man vorhat. Generell ist es zumindest zu Anfangs eine Option, via `options` die Kontraste auf Summenkontraste zu setzen, alles weitere erfordert inhaltliche Arbeit. 
+
+Um mehr mit Kontrasten zu tun bietet sich [`emmeans` an](https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html), aber das sprengt ein bisschen den Rahmen.
+
