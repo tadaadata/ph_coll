@@ -233,3 +233,13 @@ tadaa_pairwise_t(participation, response = Teilnehmerzahl,
   filter(adj.p.value < 0.05)
 ```
 
+## Interaction plots
+
+Interaction plots sind so ziemlich das einzige Visualisierungsding, das bei zweifaktorieller ANOVA funktioniert. Im Grunde werden nur die gruppenspezifischen Mittelwerte abgetragen, und das sieht dann in etwa so aus:
+
+```{r}
+tadaa_int(participation, Teilnehmerzahl, Semester, Studienjahr, grid = TRUE, show_n = TRUE)
+```
+
+Die Funktion aus der `tadaatoolbox` nimmt euch da nur Gefrickel in ggplot2 ab, [per Hand wäre das etwas unübersichtlich](https://github.com/tadaadata/tadaatoolbox/blob/master/R/tadaa_plots.R).
+
